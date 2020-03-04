@@ -7,11 +7,12 @@ import "./styles.css";
 
 import {flatfileLicense} from './license-key.js'
 import {DemoApp} from "./components/DemoApp";
-import {flatfileConfigs} from "./configs";
+import {flatfileConfigs, RecordHooks} from "./configs";
 
 const LICENSE_KEY = flatfileLicense
 
 // this is the configuration for the Flatile importer
+FlatfileImporter.setVersion(2);
 
 class App extends Component {
     constructor() {
@@ -23,8 +24,8 @@ class App extends Component {
             results: "Your raw output will appear here."
         };
     }
-
     launch() {
+        RecordHooks();
         this.importer
             .requestDataFromUser()
             .then(results => {

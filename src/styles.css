@@ -223,9 +223,20 @@ th:first-child {
     width: 20px !important;
 }
 
+.Spreadsheet {
+    width: 100% !important;
+}
+
 table {
-    width: 90% !important;
+    width: 45vw !important;
     margin: 25px auto 0 auto !important;
+}
+
+tbody {
+    display: block;
+    overflow: auto;
+    height: 25vh;
+    width: 45vw !important;
 }
 
 /*Syntax Highlighter Overrides*/

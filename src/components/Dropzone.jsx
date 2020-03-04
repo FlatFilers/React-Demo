@@ -6,6 +6,10 @@ import Dropzone from 'react-dropzone-uploader'
 const customStyles = {dropzone: {border: '2px dotted #8C66FF', borderRadius: '5px', color: 'black', width: '90%', marginTop: '20px'}}
 
 export const FlatfileDropzone = (props) => {
+
+    const importerFunction = (file) => {
+        props.initiateFlatfile()
+    }
     // specify upload params and url for your files
     const getUploadParams = ({meta}) => {
         return {url: 'https://httpbin.org/post'}
@@ -14,12 +18,13 @@ export const FlatfileDropzone = (props) => {
     // called every time a file's `status` changes
     const handleChangeStatus = ({meta, file, remove}, status) => {
         if (status === 'preparing') {
-            remove()
-        } else if (status === 'headers_received') {
-            console.log(meta, file)
-            remove()
-        } else {
             console.log(status)
+            // remove()
+        } else if (status === 'headers_received') {
+            console.log(status)
+            // remove()
+        } else {
+            console.log('handleStatusChange')
         }
     }
 

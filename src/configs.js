@@ -1,107 +1,135 @@
-import robots from "./robots.csv";
-import placeholder from "./placeholder.csv";
+import Validators from "./validators.csv";
+import Simple from "./simple.csv";
+import FlatfileImporter from "flatfile-csv-importer";
 
 export const flatfileConfigs = [{
-fields: [
-    {
-        label: "Band Name",
-        key: "band-name",
-        isRequired: true,
-        description: "Band Name",
-    },
-    {
-        label: "Song name",
-        key: "song-name",
-        description: "Song name",
-    },
-    {
-        label: "Album Name",
-        key: "album-name"
-    },
-    {
-        label: "Beloved song?",
-        key: "loved"
-    }
-],
-type: "Bands/Songs",
-allowInvalidSubmit: true,
-managed: true,
-allowCustom: false,
-disableManualInput: true
-},
-{
+    type: "Simple Example",
     fields: [
         {
-            label: "Robot Name",
+            label: "Customer Number",
+            key: "customer-id",
+            description: "The unique customer ID",
+            validators: [
+                {validate: "unique", error: "The Customer Number must be unique and can't match another Customer's Number"},
+                {validate: "required", error: "This field is required"},
+                {validate: "regex_matches", regex: "^[0-9]{10}$", error: "This number should be exactly 10 numbers"}
+            ]
+        },
+        {
+            label: "Customer Name",
             key: "name",
-            isRequired: true,
-            description: "The designation of the robot",
+            description: "Full Name",
             validators: [
-                {
-                    validate: "required_without",
-                    fields: ["id", "shield-color"],
-                    error: "must be present if no id or shield color"
-                }
+                {validate: "required"}
             ]
         },
         {
-            label: "Shield Color",
-            key: "shield-color",
-            description: "Chromatic value",
-            validator: {
-                validate: "regex_matches",
-                regex: /^[a-zA-Z]+$/,
-                error: "Not alphabet only"
-            }
-        },
-        {
-            label: "Robot Helmet Style",
-            key: "helmet-style"
-        },
-        {
-            label: "Call Sign",
-            key: "sign",
-            alternates: ["nickname", "wave"],
+            label: "Customer City",
+            key: "customer_city",
+            description: "US City",
             validators: [
-                {
-                    validate: "regex_matches",
-                    regex: /^[a-zA-Z]{4}$/,
-                    error: "must be 4 characters exactly"
-                },
-                {
-                    validate: "regex_excludes",
-                    regex: /test/,
-                    error: 'must not include the word "test"'
-                }
-            ],
-            isRequired: true
-        },
-        {
-            label: "Robot ID Code",
-            key: "id",
-            description: "Digital identity",
-            validators: [
-                {
-                    validate: "regex_matches",
-                    regex: "numeric",
-                    error: "must be numeric"
-                },
-                {
-                    validate: "required_without",
-                    fields: ["name"],
-                    error: "ID must be present if name is absent"
-                }
+                {validate: "required_without", fields: ["zip-code"]}
             ]
+        },
+        {
+            label: "Customer State",
+            key: "customer_state",
+            description: "US State",
+            validators: [
+                {validate: "required_without", fields: ["zip-code"]}
+            ]
+        },
+        {
+            label: "Customer Zip Code",
+            key: "zip_code",
+            description: "US Postal Code",
+            validators: [
+                {validate: "required_without", fields: ["state", "city"]},
+                {validate: "regex_matches", regex: "^[0-9]{5}$", error: "Must be 5 digits"}
+            ]
+        },
+        {
+            label: "Education Level",
+            key: "education",
+            description: "Highest Education Achieved",
+            type: "select",
+            options: [
+                {value: "none", label: "none"},
+                {value: "high_school", label: "High School/GED"},
+                {value: "some_college", label: "Some College"},
+                {value: "associates", label: "Associates/2-Year Degree"},
+                {value: "bachelors", label: "Bachelors"},
+                {value: "masters", label: "Masters or more"}
+            ]
+        },
+        {
+            label: "Currently Employed",
+            key: "employed",
+            description: "Employment Status",
+            type: "boolean"
         }
     ],
-    type: "Robot",
     allowInvalidSubmit: true,
     managed: true,
-    allowCustom: true,
-    disableManualInput: false
-}]
+    allowCustom: false,
+    disableManualInput: true
+},
+{
+    type: "Record Hooks Example",
+    fields: [
+        {
+            label: "Customer Number",
+            key: "id",
+            description: "The unique customer ID",
+            validators: [
+                {validate: "unique", error: "The Customer Number must be unique and can't match another Customer's Number"},
+                {validate: "required", error: "This field is required"}
+            ]
+        },
+        {
+            label: "Customer First Name",
+            key: "first_name",
+            description: "First Name",
+            validators: [
+                {validate: "required"}
+            ]
+        },
+        {
+            label: "Customer Last Name",
+            key: "last_name",
+            description: "First Name",
+            validators: [
+                {validate: "required"}
+            ]
+        },
+        {
+            label: "Customer City",
+            key: "city",
+            description: "US City"
+        },
+        {
+            label: "Customer State",
+            key: "state",
+            description: "US State",
+        },
+        {
+            label: "Customer Zip Code",
+            key: "zip",
+            description: "US Postal Code"
+        },
+        {
+            label: "Date of Birth",
+            key: "dob",
+            description: "The customer birth date."
+        }
+    ],
+    allowInvalidSubmit: true,
+    managed: true,
+    allowCustom: false,
+    disableManualInput: true
+}];
 
-export const filesToUse = [robots, placeholder]
+export const filesToUse = [Simple, Validators]
 
 let promiseArray = []
 let finalArray = []
@@ -124,7 +152,7 @@ const splitCsv = (csvString) => {
         }
     }
     return breakOnComma
-}
+};
 
 const loopIfUnresolved = () => {
     if (promiseArray.length === 0) {
@@ -134,8 +162,25 @@ const loopIfUnresolved = () => {
             finalArray.push(splitCsv(promiseArray[i]))
         }
     }
-}
-loopIfUnresolved(promiseArray)
+};
+loopIfUnresolved(promiseArray);
+
+export const RecordHooks = () => {
+    FlatfileImporter.registerRecordHook((record, index) => {
+        const out = {};
+        if (record.zip && record.zip.length < 5) {
+            out.zip = {
+                value: record.zip.padStart(5, "0"),
+                info: [
+                    {
+                        message: "Zipcode was padded with zeroes",
+                        level: "warning"
+                    }
+                ]
+            };
+        }
+    })
+};
 
 export default finalArray
 

@@ -7,12 +7,13 @@ import Toggle from "react-toggle"
 import "react-toggle/style.css"
 
 const initialData = [
-    [{value: ''}, {value: ''}, {value: ''}, {value: ''}],
-    [{value: ''}, {value: ''}, {value: ''}, {value: ''}],
-    [{value: ''}, {value: ''}, {value: ''}, {value: ''}],
-    [{value: ''}, {value: ''}, {value: ''}, {value: ''}],
-    [{value: ''}, {value: ''}, {value: ''}, {value: ''}]
-
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}],
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}],
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}],
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}],
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}],
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}],
+    [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}]
 ]
 
 const getFileName = (file) => {
@@ -47,7 +48,9 @@ const FileIcon = props => {
     )
 }
 // import Dropzone from "react-dropzone-uploader/dist/Dropzone";
-
+const consoleSomething = () => {
+    console.log('something')
+}
 // export const DemoApp = (filesArray, configsArray) => {
 export const DemoApp = () => {
     //const configs = configsArray // probably some function here that will put each config together
@@ -67,7 +70,7 @@ export const DemoApp = () => {
         <div id="demo-app">
             <ConfigHighlighter config={config}/>
             <div id="play-area" className="demo-half">
-                <FlatfileDropzone text="Drag and drop a file OR click to upload"/>
+                <FlatfileDropzone text="Drag and drop a file below OR click to upload" initiateFlatfile={consoleSomething}/>
                 <div className="icon-wrapper">
                     {filesToUse.map((item, index) => {
                         let displayName = getFileName(item);
